@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Attendance System</title>
+    <style>
+        body {
+            font-family: Arial;
+            text-align: center;
+            padding: 40px;
+        }
+        input {
+            padding: 10px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 10px;
+            cursor: pointer;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: green;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Attendance Marking System</h2>
+
+<input type="text" id="studentID" placeholder="Enter Student ID">
+
+<br><br>
+
+<button onclick="mark('present')">Present</button>
+<button onclick="mark('absent')">Absent</button>
+
+<div id="result"></div>
+
+<script>
+    async function mark(status) {
+        let id = document.getElementById("studentID").value;
+
+        if(!id){
+            alert("Enter student ID");
+            return;
+        }
+
+        let url = `https://hirh5wbv90.execute-api.ap-southeast-2.amazonaws.com/prod/Attendance?id=${id}&status=${status}`;
+
+        let res = await fetch(url);
+
+        // Read as text instead of JSON
+        let data = await res.text();
+
+        // Remove extra quotes and show message
+        document.getElementById("result").innerText =
+            data.replace(/"/g, "");
+    }
+</script>
+
+</body>
+</html>
